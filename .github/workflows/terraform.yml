@@ -48,12 +48,12 @@ jobs:
           name: terraform-plan
           path: tfplan
 
-  apply:
+   apply:
     name: Terraform Apply (requires approval)
     runs-on: ubuntu-latest
     needs: terraform
     environment:
-      name: production         # 👈 this adds an approval gate
+      name: production
       url: https://portal.azure.com
 
     env:
@@ -74,6 +74,9 @@ jobs:
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.5.7
+
+      - name: Terraform Init (reconfigure)
+        run: terraform init -reconfigure -upgrade
 
       - name: Download Plan Artifact
         uses: actions/download-artifact@v4
