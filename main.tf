@@ -33,7 +33,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
   }
 }
 
-  # Add the Helm release
+  # Add the Helm release in kubernetes
 resource "helm_release" "nginx" {
   name       = "my-nginx"
   repository = "https://charts.bitnami.com/bitnami"
