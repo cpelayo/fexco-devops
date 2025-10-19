@@ -39,7 +39,7 @@ resource "helm_release" "nginx" {
   repository = "https://charts.bitnami.com/bitnami"
   chart      = "nginx"
 
-  # optional namespace (Terraform will create it)
+  # optional namespace 
   namespace = "default"
 
   values = [
