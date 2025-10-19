@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch:   # allows manual runs too
 
 permissions:
   contents: read
@@ -12,7 +11,7 @@ permissions:
 
 jobs:
   terraform:
-    name: Terraform Plan
+    name: Terraform Plan & Apply (with approval gate)
     runs-on: ubuntu-latest
 
     env:
@@ -50,12 +49,11 @@ jobs:
           path: tfplan
 
   apply:
-    name: Terraform Apply (manual approval)
+    name: Terraform Apply (requires approval)
     runs-on: ubuntu-latest
-    needs: terraform   # wait for plan to finish
-    if: github.event_name == 'workflow_dispatch'   # only manual trigger
+    needs: terraform
     environment:
-      name: production
+      name: production         # 👈 this adds an approval gate
       url: https://portal.azure.com
 
     env:
