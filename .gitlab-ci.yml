@@ -1,0 +1,46 @@
+stages:
+  - validate
+  - plan
+  - apply
+  - destroy
+
+variables:
+  TF_IN_AUTOMATION: "true"
+  TF_INPUT: "false"
+  TF_CLI_ARGS: "-no-color"
+
+before_script:
+  - cd infra
+  - terraform init -input=false
+
+validate:
+  stage: validate
+  script:
+    - terraform fmt -check
+    - terraform validate
+
+plan:
+  stage: plan
+  script:
+    - terraform plan -out=plan.tfplan
+  artifacts:
+    paths:
+      - infra/plan.tfplan
+  only:
+    - main
+
+apply:
+  stage: apply
+  script:
+    - terraform apply "plan.tfplan"
+  when: manual
+  only:
+    - main
+
+destroy:
+  stage: destroy
+  script:
+    - terraform destroy -auto-approve
+  when: manual
+  only:
+    - main
