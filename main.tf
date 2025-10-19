@@ -33,14 +33,14 @@ resource "azurerm_kubernetes_cluster" "aks" {
   }
 }
 
-  # Add the Helm release in kubernetes
+# Add the Helm release in kubernetes
 resource "helm_release" "nginx" {
   name       = "my-nginx"
   repository = "https://charts.bitnami.com/bitnami"
   chart      = "nginx"
 
   # optional namespace (Terraform will create it)
-  namespace  = "default"
+  namespace = "default"
 
   values = [
     file("${path.module}/helm/values.yaml")
