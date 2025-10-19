@@ -1,3 +1,9 @@
+# Create Resource Group
+resource "azurerm_resource_group" "rg" {
+  name     = "aks-demo-rg"
+  location = "West Europe"
+}
+
 # Create the Azure Kubernetes Service (AKS) cluster
 resource "azurerm_kubernetes_cluster" "aks" {
   name                = "aks-demo-cluster"
@@ -9,7 +15,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
   default_node_pool {
     name       = "default"
     node_count = 1
-    vm_size    = "Standard_B2s"  # small, cost-effective SKU
+    vm_size    = "Standard_B2s" # small, cost-effective SKU
   }
 
   # Use Managed Identity for simplicity and security
@@ -25,4 +31,18 @@ resource "azurerm_kubernetes_cluster" "aks" {
     environment = "dev"
     owner       = "cesar"
   }
+}
+
+  # Add the Helm release
+resource "helm_release" "nginx" {
+  name       = "my-nginx"
+  repository = "https://charts.bitnami.com/bitnami"
+  chart      = "nginx"
+
+  # optional namespace (Terraform will create it)
+  namespace  = "default"
+
+  values = [
+    file("${path.module}/helm/values.yaml")
+  ]
 }
