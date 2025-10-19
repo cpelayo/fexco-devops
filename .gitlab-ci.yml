@@ -44,3 +44,4 @@ destroy:
   when: manual
   only:
     - main
+    
