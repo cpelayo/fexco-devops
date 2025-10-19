@@ -27,7 +27,7 @@ plan:
     paths:
       - infra/plan.tfplan
   only:
-    - main
+    - master
 
 apply:
   stage: apply
@@ -35,7 +35,7 @@ apply:
     - terraform apply "plan.tfplan"
   when: manual
   only:
-    - main
+    - master
 
 destroy:
   stage: destroy
@@ -43,5 +43,4 @@ destroy:
     - terraform destroy -auto-approve
   when: manual
   only:
-    - main
-    
+    - master
