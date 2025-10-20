@@ -22,7 +22,7 @@ jobs:
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
 
-      # ☁️ OIDC credentials (no secret)
+      # ☁️ OIDC credentials for Terraform provider
       ARM_USE_OIDC: true
       ARM_OIDC_CLIENT_ID: ${{ secrets.ARM_OIDC_CLIENT_ID }}
 
@@ -43,10 +43,10 @@ jobs:
             -backend-config="storage_account_name=tfstatecpelayostorage" \
             -backend-config="container_name=tfstate" \
             -backend-config="key=terraform.tfstate" \
-            -backend-config="client_id=${{ secrets.ARM_CLIENT_ID }}" \
-            -backend-config="client_secret=${{ secrets.ARM_CLIENT_SECRET }}" \
-            -backend-config="tenant_id=${{ secrets.ARM_TENANT_ID }}" \
-            -backend-config="subscription_id=${{ secrets.ARM_SUBSCRIPTION_ID }}"
+            -backend-config="client_id=${{ env.ARM_CLIENT_ID }}" \
+            -backend-config="client_secret=${{ env.ARM_CLIENT_SECRET }}" \
+            -backend-config="tenant_id=${{ env.ARM_TENANT_ID }}" \
+            -backend-config="subscription_id=${{ env.ARM_SUBSCRIPTION_ID }}"
 
       - name: Terraform Validate
         run: terraform fmt -check && terraform validate
@@ -69,7 +69,7 @@ jobs:
       url: https://portal.azure.com
 
     env:
-      # 🪣 Backend (secret-based)
+      # 🪣 Backend credentials
       ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
       ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
@@ -77,7 +77,7 @@ jobs:
 
       # ☁️ OIDC credentials
       ARM_USE_OIDC: true
-      ARM_CLIENT_ID: ${{ secrets.ARM_OIDC_CLIENT_ID }}
+      ARM_OIDC_CLIENT_ID: ${{ secrets.ARM_OIDC_CLIENT_ID }}
 
     steps:
       - name: Checkout code
@@ -96,10 +96,10 @@ jobs:
             -backend-config="storage_account_name=tfstatecpelayostorage" \
             -backend-config="container_name=tfstate" \
             -backend-config="key=terraform.tfstate" \
-            -backend-config="client_id=${{ secrets.ARM_CLIENT_ID }}" \
-            -backend-config="client_secret=${{ secrets.ARM_CLIENT_SECRET }}" \
-            -backend-config="tenant_id=${{ secrets.ARM_TENANT_ID }}" \
-            -backend-config="subscription_id=${{ secrets.ARM_SUBSCRIPTION_ID }}"
+            -backend-config="client_id=${{ env.ARM_CLIENT_ID }}" \
+            -backend-config="client_secret=${{ env.ARM_CLIENT_SECRET }}" \
+            -backend-config="tenant_id=${{ env.ARM_TENANT_ID }}" \
+            -backend-config="subscription_id=${{ env.ARM_SUBSCRIPTION_ID }}"
 
       - name: Download Plan Artifact
         uses: actions/download-artifact@v4
@@ -119,7 +119,7 @@ jobs:
       url: https://portal.azure.com
 
     env:
-      # 🪣 Backend (secret-based)
+      # 🪣 Backend credentials
       ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
       ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
@@ -127,7 +127,7 @@ jobs:
 
       # ☁️ OIDC credentials
       ARM_USE_OIDC: true
-      ARM_CLIENT_ID: ${{ secrets.ARM_OIDC_CLIENT_ID }}
+      ARM_OIDC_CLIENT_ID: ${{ secrets.ARM_OIDC_CLIENT_ID }}
 
     steps:
       - name: Checkout code
@@ -146,10 +146,10 @@ jobs:
             -backend-config="storage_account_name=tfstatecpelayostorage" \
             -backend-config="container_name=tfstate" \
             -backend-config="key=terraform.tfstate" \
-            -backend-config="client_id=${{ secrets.ARM_CLIENT_ID }}" \
-            -backend-config="client_secret=${{ secrets.ARM_CLIENT_SECRET }}" \
-            -backend-config="tenant_id=${{ secrets.ARM_TENANT_ID }}" \
-            -backend-config="subscription_id=${{ secrets.ARM_SUBSCRIPTION_ID }}"
+            -backend-config="client_id=${{ env.ARM_CLIENT_ID }}" \
+            -backend-config="client_secret=${{ env.ARM_CLIENT_SECRET }}" \
+            -backend-config="tenant_id=${{ env.ARM_TENANT_ID }}" \
+            -backend-config="subscription_id=${{ env.ARM_SUBSCRIPTION_ID }}"
 
       - name: Terraform Destroy
         run: terraform destroy -auto-approve
