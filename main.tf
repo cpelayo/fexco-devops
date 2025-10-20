@@ -34,11 +34,10 @@ resource "azurerm_kubernetes_cluster" "aks" {
 }
 
 # Add the Helm release in kubernetes
-resource "helm_release" "nginx" {
-  name       = "my-nginx"
-  repository = "https://charts.bitnami.com/bitnami"
-  version    = "22.0.11" # pin version
-  chart      = "nginx"
+resource "helm_release" "nginx_ingress" {
+  name       = "ingress-nginx"
+  repository = "https://kubernetes.github.io/ingress-nginx"
+  chart      = "ingress-nginx"
 
   # optional namespace 
   namespace = "default"
