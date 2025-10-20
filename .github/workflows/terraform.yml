@@ -84,7 +84,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: apply
     environment:
-      name: destroy.approval      # Approval gate before destroy
+      name: destroy-approval      # Approval gate before destroy
       url: https://portal.azure.com
 
     env:
