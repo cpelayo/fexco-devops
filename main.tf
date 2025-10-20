@@ -37,7 +37,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
 resource "helm_release" "nginx" {
   name       = "my-nginx"
   repository = "https://charts.bitnami.com/bitnami"
-  version    = "15.2.3" # pin version
+  version    = "22.0.11" # pin version
   chart      = "nginx"
 
   # optional namespace 
