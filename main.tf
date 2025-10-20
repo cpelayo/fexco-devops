@@ -23,6 +23,10 @@ resource "azurerm_kubernetes_cluster" "aks" {
     type = "SystemAssigned"
   }
 
+  oms_agent {
+    log_analytics_workspace_id = azurerm_log_analytics_workspace.aks_logs.id
+  }
+
   # Enable RBAC for better management
   role_based_access_control_enabled = true
 
@@ -32,6 +36,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
     owner       = "cesar"
   }
 }
+
 
 # Add the Helm release in kubernetes
 resource "helm_release" "grafana" {
