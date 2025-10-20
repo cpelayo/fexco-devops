@@ -37,6 +37,7 @@ jobs:
       - name: Terraform Init
         run: terraform init -reconfigure -upgrade
 
+      #to test OIDC
       - name: Azure CLI Login (OIDC)
         uses: azure/login@v2
         with:
