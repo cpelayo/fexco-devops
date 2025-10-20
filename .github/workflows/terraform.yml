@@ -16,11 +16,10 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      # 🔐 Terraform Cloud token (for backend auth)
-      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
 
       # 🌩️ Azure OIDC credentials
       ARM_USE_OIDC: true
+      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
       ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
@@ -64,7 +63,7 @@ jobs:
       url: https://portal.azure.com
 
     env:
-      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
+      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
       ARM_USE_OIDC: true
       ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
@@ -104,7 +103,7 @@ jobs:
       url: https://portal.azure.com
 
     env:
-      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
+      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
       ARM_USE_OIDC: true
       ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
