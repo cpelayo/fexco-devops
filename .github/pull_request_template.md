@@ -4,7 +4,7 @@
 📝 <em>(Short, descriptive title of the change)</em></p>
 
 <p><b>Description:</b><br>
-💡 <em>Explain what this PR does, what problem it solves, or what feature it adds.</em></p>
+💡 <em>what problem it solves, or what feature it adds.</em></p>
 
 <hr>
 
