@@ -22,13 +22,26 @@ jobs:
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
 
-      # ☁️ OIDC credentials for Terraform provider
+      # ☁️ OIDC credentials (short-lived)
       ARM_USE_OIDC: true
       ARM_OIDC_CLIENT_ID: ${{ secrets.ARM_OIDC_CLIENT_ID }}
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Azure OIDC Login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.ARM_OIDC_CLIENT_ID }}
+          tenant-id: ${{ secrets.ARM_TENANT_ID }}
+          subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+
+      - name: Validate Azure Login
+        run: |
+          echo "🔎 Validating Azure OIDC authentication..."
+          az account show
+          echo "✅ Azure OIDC authentication successful!"
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
@@ -83,6 +96,19 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Azure OIDC Login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.ARM_OIDC_CLIENT_ID }}
+          tenant-id: ${{ secrets.ARM_TENANT_ID }}
+          subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+
+      - name: Validate Azure Login
+        run: |
+          echo "🔎 Validating Azure OIDC authentication..."
+          az account show
+          echo "✅ Azure OIDC authentication successful!"
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
@@ -132,6 +158,19 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Azure OIDC Login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.ARM_OIDC_CLIENT_ID }}
+          tenant-id: ${{ secrets.ARM_TENANT_ID }}
+          subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+
+      - name: Validate Azure Login
+        run: |
+          echo "🔎 Validating Azure OIDC authentication..."
+          az account show
+          echo "✅ Azure OIDC authentication successful!"
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
