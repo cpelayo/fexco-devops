@@ -1,6 +1,19 @@
-controller:
-  replicaCount: 1
-  service:
-    type: LoadBalancer
-  admissionWebhooks:
-    enabled: false
+replicaCount: 2
+
+service:
+  type: LoadBalancer
+  port: 80
+
+adminUser: admin
+adminPassword: admin123
+
+persistence:
+  enabled: false
+
+resources:
+  limits:
+    cpu: 200m
+    memory: 256Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi

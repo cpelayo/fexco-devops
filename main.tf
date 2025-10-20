@@ -34,13 +34,11 @@ resource "azurerm_kubernetes_cluster" "aks" {
 }
 
 # Add the Helm release in kubernetes
-resource "helm_release" "nginx_ingress" {
-  name       = "ingress-nginx"
-  repository = "https://kubernetes.github.io/ingress-nginx"
-  chart      = "ingress-nginx"
-
-  # optional namespace 
-  namespace = "default"
+resource "helm_release" "grafana" {
+  name       = "grafana"
+  repository = "https://grafana.github.io/helm-charts"
+  chart      = "grafana"
+  namespace  = "default"
 
   values = [
     file("${path.module}/helm/values.yaml")
