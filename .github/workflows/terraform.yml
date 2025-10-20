@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  id-token: write        # Required for OIDC auth
+  id-token: write        # Required for OIDC
   contents: read
 
 jobs:
@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      # Only init needs static credentials for AzureRM backend
+      # Only init uses static credentials for backend setup
       ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
       ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
@@ -31,21 +31,16 @@ jobs:
         with:
           terraform_version: 1.5.7
 
-      - name: Terraform Init (using bac
+      - name: Terraform Init
         run: terraform init -reconfigure -upgrade
 
-      - name: Upload .terraform directory (for reuse)
-        uses: actions/upload-artifact@v4
-        with:
-          name: terraform-init
-          path: .terraform/
-
-    plan:
+  plan:
     name: Terraform Plan
     runs-on: ubuntu-latest
     needs: init
 
     env:
+      # OIDC short-lived credentials
       ARM_USE_OIDC: true
       ARM_CLIENT_ID: ${{ secrets.ARM_OIDC_CLIENT_ID }}
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
@@ -73,7 +68,7 @@ jobs:
         with:
           terraform_version: 1.5.7
 
-      - name: Terraform Init (for OIDC session)
+      - name: Terraform Init
         run: terraform init -reconfigure -upgrade
 
       - name: Terraform Plan
@@ -118,6 +113,9 @@ jobs:
         with:
           terraform_version: 1.5.7
 
+      - name: Terraform Init
+        run: terraform init -reconfigure -upgrade
+
       - name: Download Plan Artifact
         uses: actions/download-artifact@v4
         with:
@@ -159,6 +157,9 @@ jobs:
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.5.7
+
+      - name: Terraform Init
+        run: terraform init -reconfigure -upgrade
 
       - name: Terraform Destroy
         run: terraform destroy -auto-approve
