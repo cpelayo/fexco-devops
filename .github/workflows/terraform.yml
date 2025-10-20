@@ -37,6 +37,9 @@ jobs:
       - name: Terraform Init
         run: terraform init -reconfigure -upgrade
 
+      - name: Verify Azure Identity (OIDC)
+        run: az account show
+
       - name: Terraform Validate
         run: terraform fmt -check && terraform validate
 
