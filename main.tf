@@ -37,13 +37,16 @@ resource "azurerm_kubernetes_cluster" "aks" {
   }
 }
 
-
-# Add the Helm release in kubernetes
 resource "helm_release" "grafana" {
-  name       = "grafana"
-  repository = "https://grafana.github.io/helm-charts"
-  chart      = "grafana"
-  namespace  = "default"
+  name             = "grafana"
+  repository       = "https://grafana.github.io/helm-charts"
+  chart            = "grafana"
+  namespace        = "default"
+  create_namespace = true
+  cleanup_on_fail  = true
+  force_update     = true # If release exists, upgrade instead of failing
+  replace          = true # Replace if stuck in failed state
+  atomic           = true
 
   values = [
     file("${path.module}/helm/values.yaml")
