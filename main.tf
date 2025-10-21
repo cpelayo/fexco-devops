@@ -40,7 +40,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
 
 # Add the Helm release in kubernetes
 resource "helm_release" "grafana" {
-  count = length(data.helm_release.grafana_existing.name) == 0 ? 1 : 0
+  count      = length(data.helm_release.grafana_existing.name) == 0 ? 1 : 0
   name       = "grafana"
   repository = "https://grafana.github.io/helm-charts"
   chart      = "grafana"
