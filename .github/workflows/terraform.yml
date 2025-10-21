@@ -46,7 +46,7 @@ jobs:
           path: tfplan
 
   apply:
-    name: Terraform Apply
+    name: Terraform Apply #apply
     runs-on: ubuntu-latest
     needs: plan
     environment:
