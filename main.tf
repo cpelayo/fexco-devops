@@ -27,6 +27,11 @@ resource "azurerm_kubernetes_cluster" "aks" {
     log_analytics_workspace_id = azurerm_log_analytics_workspace.aks_logs.id
   }
 
+  network_profile {
+    network_plugin = "azure"
+    network_policy = "azure"
+  }
+
   # Enable RBAC for better management
   role_based_access_control_enabled = true
 
@@ -38,15 +43,18 @@ resource "azurerm_kubernetes_cluster" "aks" {
 }
 
 resource "helm_release" "grafana" {
+  provider         = helm.aks
+  depends_on       = [azurerm_kubernetes_cluster.aks]
   name             = "grafana"
   repository       = "https://grafana.github.io/helm-charts"
   chart            = "grafana"
   namespace        = "default"
   create_namespace = true
-  cleanup_on_fail  = true
-  force_update     = true # If release exists, upgrade instead of failing
-  replace          = true # Replace if stuck in failed state
-  atomic           = true
+
+  cleanup_on_fail = true
+  force_update    = true # If release exists, upgrade instead of failing
+  replace         = true # Replace if stuck in failed state
+  atomic          = true
 
   values = [
     file("${path.module}/helm/values.yaml")
