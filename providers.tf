@@ -17,6 +17,12 @@ provider "azurerm" {
   subscription_id = "0d0d36f2-1f7f-49e5-9188-1e3cf650ebd1"
 }
 
+data "azurerm_kubernetes_cluster" "aks" {
+  name                = azurerm_kubernetes_cluster.aks.name
+  resource_group_name = azurerm_kubernetes_cluster.aks.resource_group_name
+  depends_on          = [azurerm_kubernetes_cluster.aks]
+}
+
 provider "helm" {
   kubernetes = {
     host                   = azurerm_kubernetes_cluster.aks.kube_config[0].host
@@ -32,4 +38,3 @@ provider "kubernetes" {
   client_key             = base64decode(azurerm_kubernetes_cluster.aks.kube_admin_config[0].client_key)
   cluster_ca_certificate = base64decode(azurerm_kubernetes_cluster.aks.kube_admin_config[0].cluster_ca_certificate)
 }
-
