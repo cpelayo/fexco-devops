@@ -44,6 +44,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
 
 resource "helm_release" "grafana" {
   provider         = helm.aks
+  depends_on       = [azurerm_kubernetes_cluster.aks]
   name             = "grafana"
   repository       = "https://grafana.github.io/helm-charts"
   chart            = "grafana"

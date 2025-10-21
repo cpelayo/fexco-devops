@@ -83,14 +83,19 @@ Teardown Instructions
 3. Confirm manual approval in Review Deployments; check on production and approve and deploy.
 ##########################
 
---resource-group aks-demo-rg \
- --name aks-demo-cluster \
---admin
+az aks get-credentials \
+  --resource-group aks-demo-rg \
+  --name aks-demo-cluster \
+  --admin
+
 kubectl run test-server --image=python:3.9-slim --restart=Never \
 --port=5678 \
 --command -- python -m http.server 5678
+
 kubectl get pod  -o wide
+
 kubectl exec -it grafana-544f88698d-cbxxx -- sh
+
 curl -v http://10.244.0.205:5678
 
 
