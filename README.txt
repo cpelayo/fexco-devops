@@ -1,4 +1,4 @@
-FEXC O DevOps Take-Home Assessment
+FEXCO DevOps Take-Home Assessment
 
 Objective
 Provision an Azure Kubernetes Service (AKS) cluster using Terraform, deploy a simple Helm workload to it, and manage the lifecycle using a GitHub Actions CI/CD pipeline.
@@ -26,6 +26,7 @@ Azure Requirements:
 - Service Principal or OIDC setup for authentication in GitHub Actions
 - Storage account and container for Terraform remote backend (configured in backend.tf)
 
+##############
 Setup Steps and How to Trigger the Pipeline
 1. Clone the repository:
    git clone https://https://github.com/cpelayo/fexco-devops
@@ -47,6 +48,7 @@ Setup Steps and How to Trigger the Pipeline
    - Apply: Requires manual approval; applies infrastructure.
    - Destroy: Requires manual approval; stage to clean up all resources.
 
+##############
 How to Verify the Deployed Workload
 1. Retrieve AKS credentials:
    az aks get-credentials -n <aks-cluster-name> -g <resource-group>
@@ -68,7 +70,48 @@ Teardown Instructions
 2. Select the same run that applied the plan
 3. Confirm manual approval in Review Deployments; check on production and approve and deploy.
 
+##############
+Verify Backend configured
 
+Github -> Actions -> Any Workflow -> Terraform Plan -> Terraform intit
+You shold see the message
+Successfully configured the backend "azurerm"!
+
+##############
+How to verify Network Policy
+
+az aks get-credentials \
+  --name aks-cluster \
+  --resource-group aks-demo-rg
+
+
+kubectl get ns --show-labels
+kubectl get networkpolicy -A
+
+You should see something like:
+
+NAME               POD-SELECTOR   AGE
+allow-http-only    <all>          1m
+
+Try deploying a pod on a non-80 port:
+
+kubectl run test-server \
+  --image=hashicorp/http-echo
+
+hashicorp/http-echo listens in port 5678, a non 80 port
+
+Then test from another pod:
+
+kubectl get pod -o wide
+
+kubectl exec -it <grafana-pod-name> -- sh
+curl -v http://<test-server-ip>:<5678>
+
+should work!
+
+after applying the policy, the same test should fail.
+
+##############
 Design Trade-offs and Shortcuts Taken
 - Used Service Principal instead of OIDC to simplify configuration.
 - Single-node AKS cluster to reduce cost and complexity.
@@ -82,3 +125,5 @@ Future Improvements (Optional Stretch Goals)
 - Add observability with Prometheus and Grafana.
 - Add multi-environment structure (dev, stage, prod) using Terraform workspaces.
 - Integrate policy scanning (tfsec, checkov) in the pipeline.
+
+
