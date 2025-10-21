@@ -27,6 +27,11 @@ resource "azurerm_kubernetes_cluster" "aks" {
     log_analytics_workspace_id = azurerm_log_analytics_workspace.aks_logs.id
   }
 
+  network_profile {
+    network_plugin = "azure"
+    network_policy = "azure"
+  }
+
   # Enable RBAC for better management
   role_based_access_control_enabled = true
 
@@ -38,6 +43,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
 }
 
 resource "helm_release" "grafana" {
+  provider         = helm.aks
   name             = "grafana"
   repository       = "https://grafana.github.io/helm-charts"
   chart            = "grafana"
