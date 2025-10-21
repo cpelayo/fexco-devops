@@ -5,7 +5,7 @@
 resource "kubernetes_network_policy" "allow_http_only" {
   metadata {
     name      = "allow-http-only"
-    namespace = default
+    namespace = "default"
   }
 
   spec {
