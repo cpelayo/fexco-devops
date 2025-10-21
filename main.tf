@@ -43,10 +43,11 @@ resource "helm_release" "grafana" {
   chart            = "grafana"
   namespace        = "default"
   create_namespace = true
-  cleanup_on_fail  = true
-  force_update     = true # If release exists, upgrade instead of failing
-  replace          = true # Replace if stuck in failed state
-  atomic           = true
+
+  cleanup_on_fail = true
+  force_update    = true # If release exists, upgrade instead of failing
+  replace         = true # Replace if stuck in failed state
+  atomic          = true
 
   values = [
     file("${path.module}/helm/values.yaml")
