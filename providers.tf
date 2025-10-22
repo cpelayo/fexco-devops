@@ -87,9 +87,6 @@ provider "kubernetes" {
   )
 }
 
-##########################################################
-# Helm Provider (same pattern, using the same AKS cluster)
-##########################################################
 
 provider "helm" {
   alias = "aks"
