@@ -41,7 +41,7 @@ provider "helm" {
     cluster_ca_certificate = base64decode(data.azurerm_kubernetes_cluster.aks.kube_config[0].cluster_ca_certificate)
   }
 }
-*/
+
 
 provider "kubernetes" {
   alias                  = "aks"
@@ -61,3 +61,58 @@ provider "helm" {
   }
 }
 
+*/
+
+provider "kubernetes" {
+  alias = "aks"
+
+  host = try(
+    azurerm_kubernetes_cluster.aks.kube_config[0].host,
+    "https://placeholder.local"
+  )
+
+  client_certificate = try(
+    base64decode(azurerm_kubernetes_cluster.aks.kube_config[0].client_certificate),
+    ""
+  )
+
+  client_key = try(
+    base64decode(azurerm_kubernetes_cluster.aks.kube_config[0].client_key),
+    ""
+  )
+
+  cluster_ca_certificate = try(
+    base64decode(azurerm_kubernetes_cluster.aks.kube_config[0].cluster_ca_certificate),
+    ""
+  )
+}
+
+##########################################################
+# Helm Provider (same pattern, using the same AKS cluster)
+##########################################################
+
+provider "helm" {
+  alias = "aks"
+
+  kubernetes {
+    host = try(
+      azurerm_kubernetes_cluster.aks.kube_config[0].host,
+      "https://placeholder.local"
+    )
+
+    client_certificate = try(
+      base64decode(azurerm_kubernetes_cluster.aks.kube_config[0].client_certificate),
+      ""
+    )
+
+    client_key = try(
+      base64decode(azurerm_kubernetes_cluster.aks.kube_config[0].client_key),
+      ""
+    )
+
+    cluster_ca_certificate = try(
+      base64decode(azurerm_kubernetes_cluster.aks.kube_config[0].cluster_ca_certificate),
+      ""
+    )
+  }
+}
