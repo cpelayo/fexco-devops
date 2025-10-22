@@ -94,7 +94,7 @@ provider "kubernetes" {
 provider "helm" {
   alias = "aks"
 
-  kubernetes {
+  kubernetes = {
     host = try(
       azurerm_kubernetes_cluster.aks.kube_config[0].host,
       "https://placeholder.local"
